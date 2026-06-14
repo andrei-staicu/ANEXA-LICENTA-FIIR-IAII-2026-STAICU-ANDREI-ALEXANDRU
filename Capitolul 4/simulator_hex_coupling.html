@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<title>Simulator CNC - Hex Coupling M007478</title>
+<style>
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f4ee;
+  --bg-tertiary: #ebe9e0;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b6b66;
+  --text-tertiary: #9a9a93;
+  --border: rgba(0,0,0,0.12);
+  --border-strong: rgba(0,0,0,0.24);
+  --info-bg: #e6f1fb;
+  --info-text: #0c447c;
+  --info-border: #378add;
+  --success-bg: #eaf3de;
+  --success-text: #27500a;
+  --success-border: #639922;
+}
+* { box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 20px;
+  line-height: 1.5;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 4px 0;
+}
+.subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0 0 20px 0;
+}
+.sim-canvas-wrap {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.sim-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.sim-info .left { color: var(--text-secondary); }
+.sim-info .right { color: var(--text-primary); font-weight: 500; }
+canvas { width: 100%; height: auto; display: block; }
+.legend {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  font-size: 11px; color: var(--text-secondary);
+  margin-top: 6px;
+}
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.legend-swatch {
+  width: 12px; height: 12px; border-radius: 2px;
+  border: 0.5px solid var(--border);
+}
+.sim-controls {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+button {
+  padding: 8px 14px;
+  font-size: 13px;
+  background: var(--bg-primary);
+  border: 0.5px solid var(--border-strong);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text-primary);
+  transition: all 0.15s;
+}
+button:hover {
+  background: var(--bg-secondary);
+}
+button:active { transform: scale(0.98); }
+select {
+  padding: 8px 12px; font-size: 13px;
+  border-radius: 8px; border: 0.5px solid var(--border-strong);
+  background: var(--bg-primary); color: var(--text-primary);
+  font-family: inherit;
+}
+.sim-phases {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.phase-btn {
+  padding: 8px 10px; font-size: 12px;
+  background: var(--bg-primary);
+  border: 0.5px solid var(--border);
+  border-radius: 8px; cursor: pointer; text-align: left;
+  line-height: 1.3; transition: all 0.15s;
+}
+.phase-btn:hover {
+  background: var(--bg-secondary);
+  border-color: var(--border-strong);
+}
+.phase-btn.active {
+  background: var(--info-bg);
+  border-color: var(--info-border);
+  color: var(--info-text);
+}
+.phase-btn.done {
+  background: var(--success-bg);
+  border-color: var(--success-border);
+  color: var(--success-text);
+}
+.phase-btn .label { display: block; font-weight: 500; margin-bottom: 2px; }
+.phase-btn .meta { display: block; font-size: 11px; opacity: 0.7; }
+.sim-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+.meta-card {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.meta-card .label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+.meta-card .value {
+  font-size: 14px;
+  font-weight: 500;
+}
+.gcode-section {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 12px;
+}
+.gcode-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.gcode-header h3 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+.gcode-header-controls { display: flex; gap: 8px; }
+.gcode-block {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: "SF Mono", Monaco, Consolas, "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.gcode-block .comment { color: #6a9955; }
+.gcode-block .gcode { color: #569cd6; }
+.gcode-block .mcode { color: #c586c0; }
+.gcode-block .param { color: #b5cea8; }
+.gcode-block .header { color: #ce9178; font-weight: bold; }
+.copy-feedback {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 12px;
+  color: var(--success-text);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.copy-feedback.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Simulator CNC - Hex Coupling M007478</h1>
+  <p class="subtitle">CuZn39Pb3 - Semifabricat hexagonal SW12 h11 - Strung Haas ST-10</p>
+  
+  <div class="sim-info">
+    <span class="left">Plan tehnologic: 9 faze pe 3 operatii (20, 30, 40)</span>
+    <span class="right" id="status">Gata de simulare</span>
+  </div>
+  
+  <div class="sim-canvas-wrap">
+    <canvas id="cnc" width="1100" height="380"></canvas>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:#D3D1C7"></div>Semifabricat brut</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#9FE1CB"></div>Material prelucrat</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#185FA5"></div>Scula</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#D85A30"></div>Traiectorie aschiere</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#888780"></div>Traiectorie rapid</div>
+    </div>
+  </div>
+  
+  <div class="sim-controls">
+    <button onclick="resetAll()">Reset</button>
+    <button onclick="runAll()">Ruleaza toate fazele</button>
+    <button onclick="togglePause()" id="pause-btn">Pauza</button>
+    <select id="speed" onchange="setSpeed()">
+      <option value="0.5">Viteza 0.5x</option>
+      <option value="1" selected>Viteza 1x</option>
+      <option value="2">Viteza 2x</option>
+      <option value="5">Viteza 5x</option>
+      <option value="20">Viteza 20x</option>
+    </select>
+  </div>
+  
+  <div class="sim-phases" id="phases"></div>
+  
+  <div class="sim-meta">
+    <div class="meta-card"><div class="label">Operatie</div><div class="value" id="m-op">-</div></div>
+    <div class="meta-card"><div class="label">Scula</div><div class="value" id="m-tool">-</div></div>
+    <div class="meta-card"><div class="label">vc</div><div class="value" id="m-vc">- m/min</div></div>
+    <div class="meta-card"><div class="label">fn</div><div class="value" id="m-fn">- mm/rot</div></div>
+    <div class="meta-card"><div class="label">n</div><div class="value" id="m-n">- rot/min</div></div>
+    <div class="meta-card"><div class="label">Pozitie</div><div class="value" id="m-pos">X - Z -</div></div>
+  </div>
+  
+  <div class="gcode-section">
+    <div class="gcode-header">
+      <h3 id="gcode-title">Cod G - Selecteaza o faza</h3>
+      <div class="gcode-header-controls">
+        <button onclick="showAllGcode()">Show all G-code</button>
+        <button onclick="copyGcode()">Copy</button>
+        <span class="copy-feedback" id="copy-feedback">Copiat!</span>
+      </div>
+    </div>
+    <div class="gcode-block" id="gcode-content">Apasa pe o faza pentru a vedea codul G aferent.</div>
+  </div>
+</div>
+
+<script>
+const cv = document.getElementById('cnc');
+const ctx = cv.getContext('2d');
+const W = cv.width, H = cv.height;
+
+const SCALE_Z = 22;
+const SCALE_X = 12;
+const Z0_PX = W - 80;
+const AX_PX = H / 2;
+
+function zToPx(z) { return Z0_PX - z * SCALE_Z; }
+function xToPxTop(r) { return AX_PX - r * SCALE_X; }
+function xToPxBot(r) { return AX_PX + r * SCALE_X; }
+
+const PIESA_L = 30;
+const R_HEX = 6.93;
+const R_CIL = 5.75;
+const R_HOLE = 3.0;
+const R_PREHOLE_5_5 = 2.75;
+const R_PREHOLE_3_3 = 1.65;
+const R_M4 = 2.0;
+
+const S8_Z_CENTER = 4.8;
+
+const STEP = 0.1;
+const N_POINTS = Math.round(PIESA_L / STEP) + 1;
+
+let profilExt = new Float32Array(N_POINTS);
+let profilExtBot = new Float32Array(N_POINTS);
+let profilInt = new Float32Array(N_POINTS);
+let initialProfilExt = new Float32Array(N_POINTS);
+let transvCut = new Float32Array(N_POINTS);
+let transvCutBot = new Float32Array(N_POINTS);
+
+function resetProfile() {
+  for (let i = 0; i < N_POINTS; i++) {
+    profilExt[i] = R_HEX;
+    profilExtBot[i] = R_HEX;
+    profilInt[i] = 0;
+    initialProfilExt[i] = R_HEX;
+    transvCut[i] = 0;
+    transvCutBot[i] = 0;
+  }
+}
+
+const phases = [
+  {
+    id: 'op20_f1', op: '20 / F1', label: 'Frontala S6', tool: 'Sc1',
+    toolName: 'SCLCR 1212F09 + CCGT 09 T3 04',
+    vc: 250, fn: 0.10, ap: 0.5,
+    segments: [
+      {type: 'rapid', from: [10, 5], to: [7.5, 0.5]},
+      {type: 'feed', from: [7.5, 0.5], to: [7.5, 0], action: 'approach'},
+      {type: 'feed', from: [7.5, 0], to: [-0.5, 0], action: 'face', faceAt: 0},
+      {type: 'rapid', from: [-0.5, 0], to: [10, 5]}
+    ],
+    gcode: `%
+O0001 (OP20 F1 - STRUNJIRE FRONTALA S6)
+G21 (Unitati metrice mm)
+G18 (Plan XZ - strunjire)
+G40 G80 (Anulare compensare raza si cicluri)
+
+(=== Scula Sc1: SCLCR 1212F09 + CCGT 09 T3 04 ===)
+T0101 (Selectie scula 1, offset 1)
+G97 S2000 M03 (Turatie initiala 2000 rpm, ax pornit CW)
+G00 X20.0 Z5.0 (Apropiere rapida)
+M08 (Lichid de racire pornit)
+
+(=== Faza F1: Strunjire frontala S6, ap = 0.5 mm ===)
+G96 S250 (Viteza constanta de aschiere 250 m/min)
+G50 S4000 (Limitare turatie maxima 4000 rpm)
+G00 X15.0 Z0.5 (Pozitionare deasupra piesei)
+G01 X-1.0 F0.10 (Avans frontal pana sub centru, 0.10 mm/rot)
+G00 Z5.0 (Retragere axiala)
+G00 X20.0 (Retragere radiala)
+
+M09 (Lichid oprit)
+M05 (Ax oprit)
+M30 (Sfarsit program)
+%`
+  },
+  {
+    id: 'op20_f2a', op: '20 / F2', label: 'Cilindru Ø11.5 (deg.)', tool: 'Sc1',
+    toolName: 'SCLCR 1212F09 + CCGT 09 T3 04',
+    vc: 200, fn: 0.15, ap: 0.6,
+    segments: [
+      {type: 'rapid', from: [10, 2], to: [6.35, 0.5]},
+      {type: 'feed', from: [6.35, 0.5], to: [6.35, 0], action: 'approach'},
+      {type: 'feed', from: [6.35, 0], to: [6.35, 24], action: 'turn', turnR: 6.35},
+      {type: 'feed', from: [6.35, 24], to: [10, 24], action: 'retract'},
+      {type: 'rapid', from: [10, 24], to: [10, 2]}
+    ],
+    gcode: `%
+O0002 (OP20 F2a - STRUNJIRE CILINDRU 11.5 DEGROSARE)
+G21
+G18
+G40 G80
+
+(=== Scula Sc1: SCLCR 1212F09 + CCGT 09 T3 04 ===)
+T0101
+G97 S2000 M03
+G00 X20.0 Z2.0
+M08
+
+(=== Faza F2a: Strunjire cilindru Ø11.5 - DEGROSARE, ap = 0.6 mm ===)
+(Aschiere intrerupta peste profilul hexagonal SW12)
+G96 S200 (Viteza constanta 200 m/min - redus din cauza aschierii intrerupte)
+G50 S4000
+G00 X12.7 Z0.5 (Pozitionare diametru intermediar)
+G01 Z-24.0 F0.15 (Avans longitudinal, 0.15 mm/rot)
+G01 X20.0 (Retragere radiala)
+G00 Z2.0
+
+M09
+M05
+M30
+%`
+  },
+  {
+    id: 'op20_f2b', op: '20 / F2', label: 'Cilindru Ø11.5 (fin.)', tool: 'Sc1',
+    toolName: 'SCLCR 1212F09 + CCGT 09 T3 04',
+    vc: 200, fn: 0.10, ap: 0.6,
+    segments: [
+      {type: 'rapid', from: [10, 2], to: [5.75, 0.5]},
+      {type: 'feed', from: [5.75, 0.5], to: [5.75, 0], action: 'approach'},
+      {type: 'feed', from: [5.75, 0], to: [5.75, 24], action: 'turn', turnR: 5.75},
+      {type: 'feed', from: [5.75, 24], to: [10, 24], action: 'retract'},
+      {type: 'rapid', from: [10, 24], to: [10, 2]}
+    ],
+    gcode: `%
+O0003 (OP20 F2b - STRUNJIRE CILINDRU 11.5 FINISARE)
+G21
+G18
+G40 G80
+
+(=== Scula Sc1 - aceeasi ===)
+T0101
+G97 S2000 M03
+G00 X20.0 Z2.0
+M08
+
+(=== Faza F2b: Strunjire finisare la cota finala Ø11.5 ===)
+G96 S200
+G50 S4000
+G00 X11.5 Z0.5 (Pozitionare la diametrul final)
+G01 Z-24.0 F0.10 (Avans finisare, 0.10 mm/rot)
+G01 X20.0
+G00 Z2.0
+
+M09
+M05
+M30
+%`
+  },
+  {
+    id: 'op20_f3', op: '20 / F3', label: 'Gaura Ø5.5 (Sc2)', tool: 'Sc2',
+    toolName: '860.1-0550 burghiu Ø5.5',
+    vc: 90, fn: 0.12, ap: 16.5,
+    segments: [
+      {type: 'rapid', from: [0, 5], to: [0, 0.5]},
+      {type: 'feed', from: [0, 0.5], to: [0, 0], action: 'approach'},
+      {type: 'feed', from: [0, 0], to: [0, 16.5], action: 'drill', drillR: R_PREHOLE_5_5},
+      {type: 'rapid', from: [0, 16.5], to: [0, 5]}
+    ],
+    gcode: `%
+O0004 (OP20 F3 - GAURIRE PREGATITOARE 5.5)
+G21
+G18
+G40 G80
+
+(=== Scula Sc2: 860.1-0550-017A1-NM H10F ===)
+T0202
+G97 S4000 M03 (Turatie max 4000 rpm)
+G00 X0 Z5.0
+M08
+
+(=== Faza F3: Gaurire pregatitoare Ø5.5, adancime 16.5 mm ===)
+(n = 1000 * vc / pi*D = 1000*90 / pi*5.5 = 5210 rpm, limitat la 4000)
+G00 Z0.5 (Apropiere rapida)
+G01 Z-16.5 F0.12 (Avans gaurire, 0.12 mm/rot)
+G00 Z5.0 (Retragere rapida)
+
+M09
+M05
+M30
+%`
+  },
+  {
+    id: 'op20_f4', op: '20 / F4', label: 'Alezaj Ø6 H10 (Sc3)', tool: 'Sc3',
+    toolName: 'CXS-04T098-10-2209R',
+    vc: 150, fn: 0.06, ap: 0.13,
+    segments: [
+      {type: 'rapid', from: [0, 5], to: [R_HOLE, 0.5]},
+      {type: 'feed', from: [R_HOLE, 0.5], to: [R_HOLE, 0], action: 'approach'},
+      {type: 'feed', from: [R_HOLE, 0], to: [R_HOLE, 25], action: 'bore', boreR: R_HOLE},
+      {type: 'feed', from: [R_HOLE, 25], to: [0, 25], action: 'retract'},
+      {type: 'rapid', from: [0, 25], to: [0, 5]}
+    ],
+    gcode: `%
+O0005 (OP20 F4 - ALEZAJ FINAL 6 H10)
+G21
+G18
+G40 G80
+
+(=== Scula Sc3: CXS-04T098-10-2209R + holder CXS-A16-04 ===)
+T0303
+G97 S4000 M03
+G00 X0 Z5.0
+M08
+
+(=== Faza F4: Strunjire interioara alezaj S7 ===)
+(Doua treceri: semifinisare 5.76 + finisare 6.0)
+
+(--- Trecere 1: semifinisare ---)
+G96 S150
+G50 S4000
+G00 X5.76 Z0.5
+G01 Z-25.0 F0.08
+G01 X0
+G00 Z5.0
+
+(--- Trecere 2: finisare la Ø6 H10 ---)
+G00 X6.0 Z0.5
+G01 Z-25.0 F0.06 (Avans finisare pentru Ra 1.6)
+G01 X0
+G00 Z5.0
+
+M09
+M05
+M30
+%`
+  },
+  {
+    id: 'op30_f1', op: '30 / F1', label: 'Frontala S1', tool: 'Sc1',
+    toolName: 'SCLCR 1212F09 + CCGT 09 T3 04',
+    vc: 250, fn: 0.10, ap: 0.5,
+    segments: [
+      {type: 'rapid', from: [10, 30+5], to: [7.5, 30+0.5]},
+      {type: 'feed', from: [7.5, 30+0.5], to: [7.5, 30], action: 'approach'},
+      {type: 'feed', from: [7.5, 30], to: [-0.5, 30], action: 'face', faceAt: 30},
+      {type: 'rapid', from: [-0.5, 30], to: [10, 30+5]}
+    ],
+    gcode: `%
+O0006 (OP30 F1 - STRUNJIRE FRONTALA S1)
+(Setup 2: piesa prinsa pe Ø11.5)
+G21
+G18
+G40 G80
+
+(=== Scula Sc1 ===)
+T0101
+G97 S2000 M03
+G00 X20.0 Z5.0
+M08
+
+(=== Faza F1: Strunjire frontala S1 ===)
+G96 S250
+G50 S4000
+G00 X15.0 Z0.5 (Pozitionare deasupra fetei stangi, originea acum la S1)
+G01 X-1.0 F0.10
+G00 Z5.0
+G00 X20.0
+
+M09
+M05
+M30
+%`
+  },
+  {
+    id: 'op30_f2', op: '30 / F2', label: 'Gaura Ø3.3 axial (Sc4)', tool: 'Sc4',
+    toolName: '860.1-0330 burghiu Ø3.3',
+    vc: 80, fn: 0.10, ap: 9.9,
+    segments: [
+      {type: 'rapid', from: [0, 30+5], to: [0, 30+0.5]},
+      {type: 'feed', from: [0, 30+0.5], to: [0, 30], action: 'approach'},
+      {type: 'feed', from: [0, 30], to: [0, 30-9.9], action: 'drill_left', drillR: R_PREHOLE_3_3},
+      {type: 'rapid', from: [0, 30-9.9], to: [0, 30+5]}
+    ],
+    gcode: `%
+O0007 (OP30 F2 - GAURIRE PREGATITOARE 3.3 AXIAL)
+G21
+G18
+G40 G80
+
+(=== Scula Sc4: 860.1-0330-010A0-GM X1BM ===)
+T0404
+G97 S4000 M03
+G00 X0 Z5.0
+M08
+
+(=== Faza F2: Gaurire pregatitoare M4 axial, adancime 9.9 mm ===)
+G00 Z0.5
+G01 Z-9.9 F0.10 (Avans 0.10 mm/rot)
+G00 Z5.0
+
+M09
+M05
+M30
+%`
+  },
+  {
+    id: 'op30_f3', op: '30 / F3', label: 'Filet M4 axial S10', tool: 'Sc5',
+    toolName: 'T200-XM101DA-M4 (forming tap)',
+    vc: 10, fn: 0.70, ap: 6,
+    segments: [
+      {type: 'rapid', from: [0, 30+5], to: [0, 30+0.5]},
+      {type: 'feed', from: [0, 30+0.5], to: [0, 30-6], action: 'thread', threadR: R_M4},
+      {type: 'feed', from: [0, 30-6], to: [0, 30+0.5], action: 'thread_back'},
+      {type: 'rapid', from: [0, 30+0.5], to: [0, 30+5]}
+    ],
+    gcode: `%
+O0008 (OP30 F3 - FILETARE M4 AXIAL S10)
+G21
+G18
+G40 G80
+
+(=== Scula Sc5: T200-XM101DA-M4 C110 - forming tap ===)
+T0505
+G97 S800 M03 (n = 1000*10/pi*4 = 796 rpm)
+G00 X0 Z5.0
+M08
+
+(=== Faza F3: Filetare rigida M4, lungime filet 6 mm ===)
+(fn = TP = 0.7 mm/rot obligatoriu)
+G00 Z0.5
+G84 Z-6.0 R0.5 F0.7 (Ciclu filetare rigida)
+G80 (Anulare ciclu)
+G00 Z5.0
+
+M09
+M05
+M30
+%`
+  },
+  {
+    id: 'op40_f1', op: '40 / F1', label: 'Gaura Ø3.3 transv. (Sc4)', tool: 'Sc4_TRANSV',
+    toolName: '860.1-0330 burghiu transv. (Sc4)',
+    vc: 80, fn: 0.10, ap: 11.5,
+    segments: [
+      {type: 'rapid', from: [12, S8_Z_CENTER], to: [7, S8_Z_CENTER], transv: true},
+      {type: 'feed', from: [7, S8_Z_CENTER], to: [5.75, S8_Z_CENTER], action: 'approach_transv', transv: true},
+      {type: 'feed', from: [5.75, S8_Z_CENTER], to: [-5.75, S8_Z_CENTER], action: 'drill_transv_through', transv: true, transvZ: S8_Z_CENTER, transvR: R_PREHOLE_3_3},
+      {type: 'rapid', from: [-5.75, S8_Z_CENTER], to: [12, S8_Z_CENTER], transv: true}
+    ],
+    gcode: `%
+O0009 (OP40 F1 - GAURIRE TRANSV 3.3 STRAPUNSA)
+(Operatie pe masina de gaurit cu coloana Optimum OPTIdrill B 24 H)
+(Piesa prinsa intr-un dispozitiv special, pozitionata la Z = 4.8 mm)
+G21
+
+(=== Scula Sc4: 860.1-0330 - acelasi burghi, prindere verticala ===)
+M03 S4000 (Turatie 4000 rpm, n = 1000*80/pi*3.3 = 7716, limitat la 4000)
+G00 X0 Y0 Z5.0 (Pozitionare deasupra punctului S8)
+M08
+
+(=== Faza F1: Gaurire pregatitoare transversala 3.3 strapunsa ===)
+(Adancime totala = diametrul cilindrului 11.5 mm + adaos iesire)
+G01 Z-12.0 F0.10 (Avans transversal, gaura strapunsa)
+G00 Z5.0 (Retragere)
+
+M09
+M05
+M30
+%`
+  },
+  {
+    id: 'op40_f2', op: '40 / F2', label: 'Filet M4 transv. S8', tool: 'Sc5_TRANSV',
+    toolName: 'T200-XM101DA-M4 transv. (Sc5)',
+    vc: 10, fn: 0.70, ap: 11.5,
+    segments: [
+      {type: 'rapid', from: [12, S8_Z_CENTER], to: [7, S8_Z_CENTER], transv: true},
+      {type: 'feed', from: [7, S8_Z_CENTER], to: [-7, S8_Z_CENTER], action: 'thread_transv_through', transv: true, transvZ: S8_Z_CENTER, transvR: R_M4},
+      {type: 'feed', from: [-7, S8_Z_CENTER], to: [7, S8_Z_CENTER], action: 'thread_back_transv', transv: true},
+      {type: 'rapid', from: [7, S8_Z_CENTER], to: [12, S8_Z_CENTER], transv: true}
+    ],
+    gcode: `%
+O0010 (OP40 F2 - FILETARE M4 TRANSV STRAPUNSA S8)
+(Pe aceeasi masina, dupa schimbarea sculei)
+G21
+
+(=== Scula Sc5: T200-XM101DA-M4 ===)
+M03 S800 (n = 800 rpm)
+G00 X0 Y0 Z5.0
+M08
+
+(=== Faza F2: Filetare M4 transversala strapunsa, fn = 0.7 mm/rot ===)
+G84 Z-12.0 R0.5 F0.7 (Ciclu filetare rigida, strapunsa)
+G80
+G00 Z5.0
+
+M09
+M05
+M30
+%`
+  }
+];
+
+let currentPhaseIdx = -1;
+let isRunning = false;
+let isPaused = false;
+let speed = 1;
+let completedPhases = new Set();
+let currentToolPos = {x: 10, z: 5};
+let currentSegmentIdx = 0;
+let currentSegmentT = 0;
+let trail = [];
+let animId = null;
+
+function clear() {
+  ctx.fillStyle = '#f5f4ee';
+  ctx.fillRect(0, 0, W, H);
+}
+
+function drawGrid() {
+  ctx.strokeStyle = 'rgba(150,150,150,0.15)';
+  ctx.lineWidth = 0.5;
+  for (let z = 0; z <= 35; z += 5) {
+    const px = zToPx(z);
+    if (px < 50 || px > W - 20) continue;
+    ctx.beginPath();
+    ctx.moveTo(px, 30);
+    ctx.lineTo(px, H - 30);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(120,120,120,0.7)';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Z=' + z, px, H - 12);
+  }
+  ctx.strokeStyle = 'rgba(120,120,120,0.5)';
+  ctx.setLineDash([3, 3]);
+  ctx.beginPath();
+  ctx.moveTo(40, AX_PX);
+  ctx.lineTo(W - 20, AX_PX);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = 'rgba(80,80,80,0.8)';
+  ctx.font = '11px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('Z+', 50, AX_PX - 6);
+  ctx.fillText('X+', W - 40, 50);
+}
+
+function drawPiesa() {
+  ctx.fillStyle = '#D3D1C7';
+  ctx.beginPath();
+  ctx.moveTo(zToPx(0), xToPxTop(initialProfilExt[0]));
+  for (let i = 1; i < N_POINTS; i++) {
+    ctx.lineTo(zToPx(i * STEP), xToPxTop(initialProfilExt[i]));
+  }
+  ctx.lineTo(zToPx(PIESA_L), xToPxBot(initialProfilExt[N_POINTS-1]));
+  for (let i = N_POINTS - 2; i >= 0; i--) {
+    ctx.lineTo(zToPx(i * STEP), xToPxBot(initialProfilExt[i]));
+  }
+  ctx.closePath();
+  ctx.fill();
+  
+  ctx.fillStyle = '#9FE1CB';
+  ctx.beginPath();
+  ctx.moveTo(zToPx(0), xToPxTop(profilExt[0]));
+  for (let i = 1; i < N_POINTS; i++) {
+    ctx.lineTo(zToPx(i * STEP), xToPxTop(profilExt[i]));
+  }
+  ctx.lineTo(zToPx(PIESA_L), xToPxBot(profilExtBot[N_POINTS-1]));
+  for (let i = N_POINTS - 2; i >= 0; i--) {
+    ctx.lineTo(zToPx(i * STEP), xToPxBot(profilExtBot[i]));
+  }
+  ctx.closePath();
+  ctx.fill();
+  
+  const bgColor = '#f5f4ee';
+  ctx.fillStyle = bgColor;
+  ctx.beginPath();
+  let started = false;
+  for (let i = 0; i < N_POINTS; i++) {
+    if (profilInt[i] > 0.01) {
+      if (!started) {
+        ctx.moveTo(zToPx(i * STEP), xToPxTop(profilInt[i]));
+        started = true;
+      } else {
+        ctx.lineTo(zToPx(i * STEP), xToPxTop(profilInt[i]));
+      }
+    }
+  }
+  for (let i = N_POINTS - 1; i >= 0; i--) {
+    if (profilInt[i] > 0.01) {
+      ctx.lineTo(zToPx(i * STEP), xToPxBot(profilInt[i]));
+    }
+  }
+  if (started) {
+    ctx.closePath();
+    ctx.fill();
+  }
+  
+  // Decupare crestatura transversala SUS
+  ctx.fillStyle = bgColor;
+  let firstIdxTop = -1, lastIdxTop = -1;
+  for (let i = 0; i < N_POINTS; i++) {
+    if (transvCut[i] > 0.001) {
+      if (firstIdxTop < 0) firstIdxTop = i;
+      lastIdxTop = i;
+    }
+  }
+  if (firstIdxTop >= 0 && lastIdxTop >= 0) {
+    ctx.beginPath();
+    ctx.moveTo(zToPx(firstIdxTop * STEP), xToPxTop(profilExt[firstIdxTop]));
+    for (let i = firstIdxTop; i <= lastIdxTop; i++) {
+      ctx.lineTo(zToPx(i * STEP), xToPxTop(Math.max(transvCut[i], 0)));
+    }
+    ctx.lineTo(zToPx(lastIdxTop * STEP), xToPxTop(profilExt[lastIdxTop]));
+    ctx.closePath();
+    ctx.fill();
+  }
+  
+  // Decupare crestatura transversala JOS (pentru gaura strapunsa)
+  let firstIdxBot = -1, lastIdxBot = -1;
+  for (let i = 0; i < N_POINTS; i++) {
+    if (transvCutBot[i] > 0.001) {
+      if (firstIdxBot < 0) firstIdxBot = i;
+      lastIdxBot = i;
+    }
+  }
+  if (firstIdxBot >= 0 && lastIdxBot >= 0) {
+    ctx.beginPath();
+    ctx.moveTo(zToPx(firstIdxBot * STEP), xToPxBot(profilExtBot[firstIdxBot]));
+    for (let i = firstIdxBot; i <= lastIdxBot; i++) {
+      ctx.lineTo(zToPx(i * STEP), xToPxBot(Math.max(transvCutBot[i], 0)));
+    }
+    ctx.lineTo(zToPx(lastIdxBot * STEP), xToPxBot(profilExtBot[lastIdxBot]));
+    ctx.closePath();
+    ctx.fill();
+  }
+  
+  ctx.strokeStyle = '#0F6E56';
+  ctx.lineWidth = 1;
+  
+  // Contur de sus cu crestatura
+  ctx.beginPath();
+  ctx.moveTo(zToPx(0), xToPxTop(profilExt[0]));
+  for (let i = 1; i < N_POINTS; i++) {
+    if (transvCut[i] > 0.001) {
+      if (i > 0 && transvCut[i-1] < 0.001) {
+        ctx.lineTo(zToPx(i * STEP), xToPxTop(profilExt[i]));
+        ctx.lineTo(zToPx(i * STEP), xToPxTop(transvCut[i]));
+      } else {
+        ctx.lineTo(zToPx(i * STEP), xToPxTop(transvCut[i]));
+      }
+    } else {
+      if (i > 0 && transvCut[i-1] > 0.001) {
+        ctx.lineTo(zToPx((i-1) * STEP), xToPxTop(transvCut[i-1]));
+        ctx.lineTo(zToPx((i-1) * STEP), xToPxTop(profilExt[i-1]));
+        ctx.lineTo(zToPx(i * STEP), xToPxTop(profilExt[i]));
+      } else {
+        ctx.lineTo(zToPx(i * STEP), xToPxTop(profilExt[i]));
+      }
+    }
+  }
+  ctx.stroke();
+  
+  // Contur de jos cu crestatura
+  ctx.beginPath();
+  ctx.moveTo(zToPx(0), xToPxBot(profilExtBot[0]));
+  for (let i = 1; i < N_POINTS; i++) {
+    if (transvCutBot[i] > 0.001) {
+      if (i > 0 && transvCutBot[i-1] < 0.001) {
+        ctx.lineTo(zToPx(i * STEP), xToPxBot(profilExtBot[i]));
+        ctx.lineTo(zToPx(i * STEP), xToPxBot(transvCutBot[i]));
+      } else {
+        ctx.lineTo(zToPx(i * STEP), xToPxBot(transvCutBot[i]));
+      }
+    } else {
+      if (i > 0 && transvCutBot[i-1] > 0.001) {
+        ctx.lineTo(zToPx((i-1) * STEP), xToPxBot(transvCutBot[i-1]));
+        ctx.lineTo(zToPx((i-1) * STEP), xToPxBot(profilExtBot[i-1]));
+        ctx.lineTo(zToPx(i * STEP), xToPxBot(profilExtBot[i]));
+      } else {
+        ctx.lineTo(zToPx(i * STEP), xToPxBot(profilExtBot[i]));
+      }
+    }
+  }
+  ctx.stroke();
+  
+  if (profilInt.some(v => v > 0.01)) {
+    ctx.strokeStyle = '#0F6E56';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    let startedC = false;
+    for (let i = 0; i < N_POINTS; i++) {
+      if (profilInt[i] > 0.01) {
+        const px = zToPx(i * STEP), py = xToPxTop(profilInt[i]);
+        if (!startedC) { ctx.moveTo(px, py); startedC = true; }
+        else { ctx.lineTo(px, py); }
+      } else if (startedC) {
+        ctx.stroke();
+        ctx.beginPath();
+        startedC = false;
+      }
+    }
+    if (startedC) ctx.stroke();
+    ctx.beginPath();
+    startedC = false;
+    for (let i = 0; i < N_POINTS; i++) {
+      if (profilInt[i] > 0.01) {
+        const px = zToPx(i * STEP), py = xToPxBot(profilInt[i]);
+        if (!startedC) { ctx.moveTo(px, py); startedC = true; }
+        else { ctx.lineTo(px, py); }
+      } else if (startedC) {
+        ctx.stroke();
+        ctx.beginPath();
+        startedC = false;
+      }
+    }
+    if (startedC) ctx.stroke();
+  }
+  
+  if (transvCut.some(v => v > 0.001) || transvCutBot.some(v => v > 0.001)) {
+    ctx.fillStyle = 'rgba(80,80,80,0.8)';
+    ctx.font = 'italic 10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('S8 transv. (Z=' + S8_Z_CENTER + ')', zToPx(S8_Z_CENTER), xToPxTop(R_CIL) - 8);
+  }
+}
+
+function drawTrail() {
+  if (trail.length < 2) return;
+  let prev = trail[0];
+  for (let i = 1; i < trail.length; i++) {
+    const p = trail[i];
+    ctx.strokeStyle = p.type === 'rapid' ? 'rgba(136,135,128,0.4)' : 'rgba(216,90,48,0.7)';
+    ctx.lineWidth = p.type === 'rapid' ? 1 : 1.5;
+    if (p.type === 'rapid') ctx.setLineDash([3, 3]);
+    else ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(zToPx(prev.z), xToPxTop(prev.x));
+    ctx.lineTo(zToPx(p.z), xToPxTop(p.x));
+    ctx.stroke();
+    prev = p;
+  }
+  ctx.setLineDash([]);
+}
+
+function drawTool() {
+  if (currentPhaseIdx < 0) return;
+  const phase = phases[currentPhaseIdx];
+  const px = zToPx(currentToolPos.z);
+  const py = xToPxTop(currentToolPos.x);
+  
+  if (phase.tool === 'Sc4_TRANSV') {
+    ctx.fillStyle = '#185FA5';
+    ctx.strokeStyle = '#0C447C';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(px - 6, py - 8);
+    ctx.lineTo(px + 6, py - 8);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillRect(px - 4, py - 38, 8, 30);
+    ctx.strokeRect(px - 4, py - 38, 8, 30);
+  } else if (phase.tool === 'Sc5_TRANSV') {
+    ctx.fillStyle = '#534AB7';
+    ctx.strokeStyle = '#3C3489';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(px - 6, py - 10);
+    ctx.lineTo(px + 6, py - 10);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    for (let i = 14; i < 34; i += 3) {
+      ctx.beginPath();
+      ctx.moveTo(px - 6, py - i);
+      ctx.lineTo(px + 6, py - i);
+      ctx.stroke();
+    }
+  } else if (phase.tool === 'Sc2' || phase.tool === 'Sc4') {
+    ctx.fillStyle = '#185FA5';
+    ctx.strokeStyle = '#0C447C';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(px + 8, py - 10);
+    ctx.lineTo(px + 8, py + 10);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillRect(px + 8, py - 4, 30, 8);
+    ctx.strokeRect(px + 8, py - 4, 30, 8);
+  } else if (phase.tool === 'Sc5') {
+    ctx.fillStyle = '#534AB7';
+    ctx.strokeStyle = '#3C3489';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(px + 10, py - 6);
+    ctx.lineTo(px + 10, py + 6);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+    for (let i = 12; i < 32; i += 3) {
+      ctx.beginPath();
+      ctx.moveTo(px + i, py - 6);
+      ctx.lineTo(px + i, py + 6);
+      ctx.stroke();
+    }
+  } else if (phase.tool === 'Sc3') {
+    ctx.fillStyle = '#185FA5';
+    ctx.strokeStyle = '#0C447C';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(px - 12, py - 8);
+    ctx.lineTo(px - 12, py + 4);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  } else {
+    ctx.fillStyle = '#185FA5';
+    ctx.strokeStyle = '#0C447C';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(px + 14, py - 10);
+    ctx.lineTo(px + 18, py - 10);
+    ctx.lineTo(px + 18, py - 40);
+    ctx.lineTo(px + 4, py - 40);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  }
+}
+
+function render() {
+  clear();
+  drawGrid();
+  drawPiesa();
+  drawTrail();
+  drawTool();
+}
+
+function updateMeta() {
+  if (currentPhaseIdx < 0) {
+    document.getElementById('m-op').textContent = '-';
+    document.getElementById('m-tool').textContent = '-';
+    document.getElementById('m-vc').textContent = '- m/min';
+    document.getElementById('m-fn').textContent = '- mm/rot';
+    document.getElementById('m-n').textContent = '- rot/min';
+    document.getElementById('m-pos').textContent = 'X - Z -';
+    return;
+  }
+  const p = phases[currentPhaseIdx];
+  document.getElementById('m-op').textContent = 'Op ' + p.op;
+  document.getElementById('m-tool').textContent = p.toolName;
+  document.getElementById('m-vc').textContent = p.vc + ' m/min';
+  document.getElementById('m-fn').textContent = p.fn + ' mm/rot';
+  const D = Math.max(Math.abs(currentToolPos.x) * 2, 1);
+  const n = Math.min(4000, Math.round(1000 * p.vc / (Math.PI * D)));
+  document.getElementById('m-n').textContent = n + ' rot/min';
+  document.getElementById('m-pos').textContent = 'X ' + (currentToolPos.x*2).toFixed(2) + '  Z ' + currentToolPos.z.toFixed(2);
+}
+
+function highlightGcode(code) {
+  return code
+    .split('\n')
+    .map(line => {
+      if (line.startsWith('(===') || line.startsWith('(---')) {
+        return '<span class="header">' + line.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])) + '</span>';
+      }
+      if (line.trim().startsWith('(') || line.trim().startsWith('%')) {
+        return '<span class="comment">' + line.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])) + '</span>';
+      }
+      return line
+        .replace(/\b(G\d+(\.\d+)?)\b/g, '<span class="gcode">$1</span>')
+        .replace(/\b(M\d+)\b/g, '<span class="mcode">$1</span>')
+        .replace(/\b(T\d+|S\d+|F\d+(\.\d+)?|X-?\d+(\.\d+)?|Y-?\d+(\.\d+)?|Z-?\d+(\.\d+)?|R\d+(\.\d+)?)\b/g, '<span class="param">$1</span>')
+        .replace(/(\([^)]*\))/g, '<span class="comment">$1</span>');
+    })
+    .join('\n');
+}
+
+function showGcodeForPhase(idx) {
+  const p = phases[idx];
+  document.getElementById('gcode-title').textContent = 'Cod G - ' + p.op + ' ' + p.label;
+  document.getElementById('gcode-content').innerHTML = highlightGcode(p.gcode);
+}
+
+function showAllGcode() {
+  let all = '%\n(=== PROGRAM COMPLET HEX COUPLING M007478 ===)\n(=== Material CuZn39Pb3 - Strung Haas ST-10 ===)\n\n';
+  phases.forEach(p => {
+    const code = p.gcode.replace(/^%\n/, '').replace(/\n%$/, '');
+    all += code + '\n\n';
+  });
+  all += '%';
+  document.getElementById('gcode-title').textContent = 'Cod G - Program complet (toate fazele)';
+  document.getElementById('gcode-content').innerHTML = highlightGcode(all);
+}
+
+function copyGcode() {
+  const text = document.getElementById('gcode-content').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const fb = document.getElementById('copy-feedback');
+    fb.classList.add('show');
+    setTimeout(() => fb.classList.remove('show'), 1500);
+  });
+}
+
+function updatePhaseButtons() {
+  const cont = document.getElementById('phases');
+  cont.innerHTML = '';
+  phases.forEach((p, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'phase-btn';
+    if (i === currentPhaseIdx && isRunning) btn.classList.add('active');
+    if (completedPhases.has(i)) btn.classList.add('done');
+    btn.innerHTML = '<span class="label">' + p.op + ' - ' + p.label + '</span><span class="meta">' + p.tool.replace('_TRANSV', '') + ' &middot; ' + p.vc + ' m/min</span>';
+    btn.onclick = () => { runPhase(i); showGcodeForPhase(i); };
+    cont.appendChild(btn);
+  });
+}
+
+function applyAction(seg, fromX, fromZ, toX, toZ) {
+  if (seg.action === 'face') {
+    const targetZ = seg.faceAt;
+    if (targetZ === 0) {
+      for (let i = 0; i < 5; i++) {
+        if (profilExt[i] > toX && toX > 0) profilExt[i] = toX;
+        if (profilExtBot[i] > toX && toX > 0) profilExtBot[i] = toX;
+      }
+    } else if (targetZ === 30) {
+      for (let i = N_POINTS - 5; i < N_POINTS; i++) {
+        if (profilExt[i] > toX && toX > 0) profilExt[i] = toX;
+        if (profilExtBot[i] > toX && toX > 0) profilExtBot[i] = toX;
+      }
+    }
+  } else if (seg.action === 'turn') {
+    const tR = seg.turnR;
+    const z1 = Math.min(fromZ, toZ), z2 = Math.max(fromZ, toZ);
+    const i1 = Math.max(0, Math.floor(z1 / STEP));
+    const i2 = Math.min(N_POINTS - 1, Math.ceil(z2 / STEP));
+    for (let i = i1; i <= i2; i++) {
+      if (profilExt[i] > tR) profilExt[i] = tR;
+      if (profilExtBot[i] > tR) profilExtBot[i] = tR;
+    }
+  } else if (seg.action === 'drill') {
+    const dR = seg.drillR;
+    const z1 = Math.min(fromZ, toZ), z2 = Math.max(fromZ, toZ);
+    const i1 = Math.max(0, Math.floor(z1 / STEP));
+    const i2 = Math.min(N_POINTS - 1, Math.ceil(z2 / STEP));
+    for (let i = i1; i <= i2; i++) {
+      if (profilInt[i] < dR) profilInt[i] = dR;
+    }
+  } else if (seg.action === 'drill_left') {
+    const dR = seg.drillR;
+    const z1 = Math.min(fromZ, toZ), z2 = Math.max(fromZ, toZ);
+    const i1 = Math.max(0, Math.floor(z1 / STEP));
+    const i2 = Math.min(N_POINTS - 1, Math.ceil(z2 / STEP));
+    for (let i = i1; i <= i2; i++) {
+      if (profilInt[i] < dR) profilInt[i] = dR;
+    }
+  } else if (seg.action === 'bore') {
+    const bR = seg.boreR;
+    const z1 = Math.min(fromZ, toZ), z2 = Math.max(fromZ, toZ);
+    const i1 = Math.max(0, Math.floor(z1 / STEP));
+    const i2 = Math.min(N_POINTS - 1, Math.ceil(z2 / STEP));
+    for (let i = i1; i <= i2; i++) {
+      if (profilInt[i] < bR) profilInt[i] = bR;
+    }
+  } else if (seg.action === 'thread') {
+    const tR = seg.threadR;
+    const z1 = Math.min(fromZ, toZ), z2 = Math.max(fromZ, toZ);
+    const i1 = Math.max(0, Math.floor(z1 / STEP));
+    const i2 = Math.min(N_POINTS - 1, Math.ceil(z2 / STEP));
+    for (let i = i1; i <= i2; i++) {
+      if (profilInt[i] < tR) profilInt[i] = tR;
+    }
+  } else if (seg.action === 'drill_transv_through' || seg.action === 'thread_transv_through') {
+    // Gaura strapunsa: scula traverseaza de sus prin centru pana jos
+    // X = pozitia curenta a varfului burghiului (pleaca de la R_CIL=5.75, ajunge la -R_CIL=-5.75)
+    // Pentru fiecare Z in jurul S8_Z_CENTER, tăiem material proportional
+    const cZ = seg.transvZ;
+    const halfW = seg.transvR;
+    const i1 = Math.max(0, Math.floor((cZ - halfW) / STEP));
+    const i2 = Math.min(N_POINTS - 1, Math.ceil((cZ + halfW) / STEP));
+    const xCurrent = toX;
+    
+    for (let i = i1; i <= i2; i++) {
+      // Partea de SUS: scula coboara, taie de la R_CIL spre xCurrent (cat timp xCurrent > 0)
+      if (xCurrent > 0 && xCurrent < R_CIL) {
+        if (transvCut[i] === 0 || xCurrent < transvCut[i]) {
+          transvCut[i] = xCurrent;
+        }
+      } else if (xCurrent <= 0) {
+        // scula a trecut de centru, partea de sus e taiata complet
+        transvCut[i] = 0; // 0 = taie toata partea de sus pana la axa
+      }
+      
+      // Partea de JOS: incepe sa se taie cand xCurrent < 0 (scula a trecut de centru)
+      if (xCurrent < 0) {
+        const cutDepthBot = Math.abs(xCurrent); // cat de adanc in partea de jos
+        if (cutDepthBot <= R_CIL) {
+          if (transvCutBot[i] === 0 || cutDepthBot < transvCutBot[i]) {
+            transvCutBot[i] = cutDepthBot;
+          }
+        }
+      }
+    }
+  }
+}
+
+function runPhase(idx) {
+  cancelAnimationFrame(animId);
+  currentPhaseIdx = idx;
+  currentSegmentIdx = 0;
+  currentSegmentT = 0;
+  isRunning = true;
+  isPaused = false;
+  trail = [];
+  document.getElementById('status').textContent = 'Ruleaza: ' + phases[idx].op + ' - ' + phases[idx].label;
+  updatePhaseButtons();
+  animateStep();
+}
+
+function runAll() {
+  resetProfile();
+  completedPhases.clear();
+  trail = [];
+  currentPhaseIdx = -1;
+  runNext(0);
+}
+
+function runNext(idx) {
+  if (idx >= phases.length) {
+    document.getElementById('status').textContent = 'Toate fazele complete';
+    isRunning = false;
+    currentPhaseIdx = -1;
+    updatePhaseButtons();
+    render();
+    updateMeta();
+    return;
+  }
+  currentPhaseIdx = idx;
+  currentSegmentIdx = 0;
+  currentSegmentT = 0;
+  isRunning = true;
+  isPaused = false;
+  document.getElementById('status').textContent = 'Ruleaza: ' + phases[idx].op + ' - ' + phases[idx].label;
+  updatePhaseButtons();
+  showGcodeForPhase(idx);
+  animateStep(() => {
+    completedPhases.add(idx);
+    runNext(idx + 1);
+  });
+}
+
+function animateStep(onDone) {
+  function tick() {
+    if (isPaused) {
+      animId = requestAnimationFrame(tick);
+      return;
+    }
+    const phase = phases[currentPhaseIdx];
+    if (currentSegmentIdx >= phase.segments.length) {
+      isRunning = false;
+      document.getElementById('status').textContent = 'Faza completa: ' + phase.op;
+      completedPhases.add(currentPhaseIdx);
+      updatePhaseButtons();
+      render();
+      updateMeta();
+      if (onDone) onDone();
+      return;
+    }
+    const seg = phase.segments[currentSegmentIdx];
+    const dx = seg.to[0] - seg.from[0];
+    const dz = seg.to[1] - seg.from[1];
+    const segSpeed = seg.type === 'rapid' ? 0.08 : 0.022;
+    currentSegmentT += segSpeed * speed;
+    if (currentSegmentT >= 1) {
+      currentSegmentT = 1;
+      currentToolPos = {x: seg.to[0], z: seg.to[1], transv: seg.transv};
+      if (seg.action) applyAction(seg, seg.from[0], seg.from[1], seg.to[0], seg.to[1]);
+      trail.push({x: currentToolPos.x, z: currentToolPos.z, type: seg.type, transv: seg.transv});
+      currentSegmentIdx++;
+      currentSegmentT = 0;
+    } else {
+      currentToolPos = {
+        x: seg.from[0] + dx * currentSegmentT,
+        z: seg.from[1] + dz * currentSegmentT,
+        transv: seg.transv
+      };
+      if (seg.type === 'feed' && seg.action) {
+        applyAction(seg, seg.from[0], seg.from[1], currentToolPos.x, currentToolPos.z);
+      }
+      trail.push({x: currentToolPos.x, z: currentToolPos.z, type: seg.type, transv: seg.transv});
+      if (trail.length > 800) trail = trail.slice(-800);
+    }
+    render();
+    updateMeta();
+    animId = requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+function resetAll() {
+  cancelAnimationFrame(animId);
+  resetProfile();
+  completedPhases.clear();
+  trail = [];
+  currentPhaseIdx = -1;
+  currentSegmentIdx = 0;
+  isRunning = false;
+  isPaused = false;
+  currentToolPos = {x: 10, z: 5};
+  document.getElementById('status').textContent = 'Gata de simulare';
+  document.getElementById('gcode-title').textContent = 'Cod G - Selecteaza o faza';
+  document.getElementById('gcode-content').innerHTML = 'Apasa pe o faza pentru a vedea codul G aferent.';
+  updatePhaseButtons();
+  render();
+  updateMeta();
+}
+
+function togglePause() {
+  isPaused = !isPaused;
+  document.getElementById('pause-btn').textContent = isPaused ? 'Continua' : 'Pauza';
+}
+
+function setSpeed() {
+  speed = parseFloat(document.getElementById('speed').value);
+}
+
+resetProfile();
+updatePhaseButtons();
+render();
+updateMeta();
+</script>
+</body>
+</html>
