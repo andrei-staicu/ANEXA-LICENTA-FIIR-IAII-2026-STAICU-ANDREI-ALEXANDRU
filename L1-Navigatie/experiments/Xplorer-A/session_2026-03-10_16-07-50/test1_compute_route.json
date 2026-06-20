@@ -1,0 +1,58 @@
+{
+  "test_type": "compute_route",
+  "timestamp": "2026-03-10T14:08:05.553905+00:00",
+  "planning": {
+    "duration_ms": 35.76,
+    "points": 115,
+    "route_type": "MIX",
+    "route_nodes": [
+      0,
+      2,
+      7
+    ],
+    "route_node_names": [
+      "start",
+      "center",
+      "goal"
+    ],
+    "route_edges": [
+      12,
+      24
+    ],
+    "route_cost": 107.195,
+    "penalties_per_edge": {
+      "12": 6.77,
+      "24": 14.65
+    }
+  },
+  "details": {
+    "active_alternatives": [
+      "JOS",
+      "SUS"
+    ],
+    "visited_per_label": {
+      "SUS": [
+        "center"
+      ],
+      "JOS": [
+        "center"
+      ]
+    },
+    "min_dists": {
+      "SUS/in_top": 1.0,
+      "SUS/center": 0.0,
+      "SUS/out_top": 1.0,
+      "JOS/in_bot": 0.5,
+      "JOS/center": 0.0,
+      "JOS/out_bot": 0.5
+    }
+  },
+  "semantic": {
+    "objects_count": 3,
+    "objects_by_class": {
+      "potted plant": 3
+    },
+    "valid_count": 3,
+    "timestamp": "2026-03-10T14:08:03.252621+00:00"
+  }
+}

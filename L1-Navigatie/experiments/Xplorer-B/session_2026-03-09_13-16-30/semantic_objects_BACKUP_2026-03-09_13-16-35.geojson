@@ -1,0 +1,34 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "description": "SAIM Xplorer Semantic Object Map",
+    "frame": "map",
+    "generated_by": "semantic_localizer",
+    "last_updated": "2026-03-09T13:16:12.355664+00:00",
+    "object_count": 1
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.3161,
+          0.0466
+        ]
+      },
+      "properties": {
+        "obj_id": "potted plant_0",
+        "class_name": "potted plant",
+        "class_id": 58,
+        "mobility": "static",
+        "confidence": 0.843,
+        "observation_count": 190,
+        "best_score": 18.068,
+        "first_seen": "2026-03-09T13:14:32.561504+00:00",
+        "last_seen": "2026-03-09T13:16:12.245407+00:00",
+        "ttl_seconds": -1.0
+      }
+    }
+  ]
+}

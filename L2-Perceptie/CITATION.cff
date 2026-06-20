@@ -1,0 +1,56 @@
+cff-version: 1.2.0
+title: >-
+  Lightweight Semantic-Aware Route Planning on Edge Hardware for Indoor
+  Mobile Robots: Monocular Camera–2D LiDAR Fusion with Penalty-Weighted
+  Nav2 Route Server Replanning
+message: "If you use this software in your research, please cite the associated article."
+type: software
+authors:
+  - family-names: Abaza
+    given-names: Bogdan Felician
+    email: bogdan.abaza@upb.ro
+    affiliation: >-
+      Faculty of Industrial Engineering and Robotics (FIIR),
+      National University of Science and Technology POLITEHNICA Bucharest
+    orcid: ""
+  - family-names: Staicu
+    given-names: Andrei-Alexandru
+    affiliation: >-
+      Faculty of Industrial Engineering and Robotics (FIIR),
+      National University of Science and Technology POLITEHNICA Bucharest
+  - family-names: Doicin
+    given-names: Cristian Vasile
+    affiliation: >-
+      Faculty of Industrial Engineering and Robotics (FIIR),
+      National University of Science and Technology POLITEHNICA Bucharest
+date-released: "2026-03-14"
+repository-code: https://github.com/bogdan-abaza/nav2-semantic-route-server
+license: MIT
+keywords:
+  - ROS 2
+  - Nav2
+  - Nav2 Route Server
+  - semantic navigation
+  - mobile robotics
+  - camera-LiDAR fusion
+  - edge computing
+  - Raspberry Pi 5
+  - YOLO
+  - autonomous mobile robot
+references:
+  - type: article
+    title: >-
+      Lightweight Semantic-Aware Route Planning on Edge Hardware for Indoor
+      Mobile Robots: Monocular Camera–2D LiDAR Fusion with Penalty-Weighted
+      Nav2 Route Server Replanning
+    authors:
+      - family-names: Abaza
+        given-names: Bogdan Felician
+      - family-names: Staicu
+        given-names: Andrei-Alexandru
+      - family-names: Doicin
+        given-names: Cristian Vasile
+    journal: Sensors
+    publisher: MDPI
+    year: 2026
+    status: under-review

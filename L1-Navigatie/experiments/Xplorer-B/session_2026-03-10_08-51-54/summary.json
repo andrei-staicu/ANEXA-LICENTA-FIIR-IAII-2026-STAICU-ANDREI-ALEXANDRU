@@ -1,0 +1,114 @@
+{
+  "session": "session_2026-03-10_08-51-54",
+  "timestamp": "2026-03-10T08:55:22.657605+00:00",
+  "route_name": "FIIR_CB204_CB202_Hall",
+  "tests": {
+    "baseline": {
+      "total_runs": 2,
+      "validated_success_fwd": "2/2",
+      "validated_success_ret": "2/2",
+      "forward": {
+        "time_s": {
+          "mean": 17.848,
+          "std": 0.051,
+          "min": 17.812,
+          "max": 17.884,
+          "n": 2
+        },
+        "dist_m": {
+          "mean": 6.245,
+          "std": 0.069,
+          "min": 6.196,
+          "max": 6.293,
+          "n": 2
+        },
+        "error_m": {
+          "mean": 0.305,
+          "std": 0.037,
+          "min": 0.279,
+          "max": 0.331,
+          "n": 2
+        }
+      },
+      "return": {
+        "time_s": {
+          "mean": 61.301,
+          "std": 54.768,
+          "min": 22.574,
+          "max": 100.028,
+          "n": 2
+        },
+        "dist_m": {
+          "mean": 7.245,
+          "std": 0.682,
+          "min": 6.763,
+          "max": 7.728,
+          "n": 2
+        }
+      },
+      "navigation_only": {
+        "fwd_time_s": {
+          "mean": 17.848,
+          "std": 0.051,
+          "min": 17.812,
+          "max": 17.884,
+          "n": 2
+        },
+        "ret_time_s": {
+          "mean": 61.301,
+          "std": 54.768,
+          "min": 22.574,
+          "max": 100.028,
+          "n": 2
+        },
+        "prescan_time_s": {}
+      },
+      "min_object_distance_m": {
+        "mean": 0.176,
+        "std": 0.108,
+        "min": 0.085,
+        "max": 0.31,
+        "n": 4
+      },
+      "system_metrics_summary": {
+        "cpu_pct": {
+          "mean": 87.575,
+          "std": 2.119,
+          "min": 84.4,
+          "max": 88.7,
+          "n": 4
+        },
+        "mem_pct": {
+          "mean": 13.0,
+          "std": 0.0,
+          "min": 13.0,
+          "max": 13.0,
+          "n": 4
+        },
+        "cpu_temp_max_c": {
+          "mean": 65.8,
+          "std": 0.346,
+          "min": 65.5,
+          "max": 66.1,
+          "n": 4
+        }
+      },
+      "yolo_summary": {
+        "fps": {
+          "mean": 4.75,
+          "std": 0.1,
+          "min": 4.6,
+          "max": 4.8,
+          "n": 4
+        },
+        "inference_ms": {
+          "mean": 191.925,
+          "std": 2.924,
+          "min": 188.7,
+          "max": 195.8,
+          "n": 4
+        }
+      }
+    }
+  }
+}

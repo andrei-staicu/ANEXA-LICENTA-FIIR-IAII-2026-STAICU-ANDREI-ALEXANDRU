@@ -1,0 +1,99 @@
+# =============================================================================
+# Route Configuration for Semantic Navigation Experiments
+# =============================================================================
+#
+# This is the main configuration file to edit between experiment sessions.
+# The script `test_semantic_navigation_v5_10.py` reads all route, graph, and
+# evaluation settings from this file at startup.
+#
+# Recommended workflow for a new route:
+#   1. Create a new GeoJSON route graph with the required nodes and edges
+#   2. Update `graph_filepath`, `start_node_id`, `goal_node_id`,
+#      `start_yaw_deg`, and `goal_yaw_deg`
+#   3. Update `route_alternatives` if multiple route variants exist
+#   4. Run:
+#      python3 semantic_localizer/scripts/test_semantic_navigation_v5_10.py \
+#        --config semantic_localizer/scripts/route_config.yaml
+#
+# Notes:
+#   - The paths below are written relative to the repository root.
+#   - They are intended for a repository layout containing top-level `maps/`
+#     and `experiments/` directories.
+# =============================================================================
+
+# ── Route identity ─────────────────────────────────────────────────────────────
+route_name: "FIIR_CB204_CB202_Hall"
+description: "Second-floor FIIR hallway map (10 x 10 m) with 7 nodes and 2 alternative routes."
+
+# ── Topology: single source of truth ──────────────────────────────────────────
+# The GeoJSON file stores:
+#   - nodes as Point features with id and coordinates
+#   - edges as LineString features with id, startid, and endid
+#
+# GRAPH_NODES and EDGE_PAIRS are generated automatically at startup.
+graph_filepath: "maps/route_graph_fiir.geojson"
+
+# ── Terminal nodes of the experiment ──────────────────────────────────────────
+# These node IDs must exist as Point features in `graph_filepath`.
+start_node_id: 0
+goal_node_id: 7
+
+# ── Robot yaw at terminal nodes (degrees, map frame) ─────────────────────────
+# Measured empirically with the robot aligned toward the graph interior.
+# Example procedure:
+#   ros2 topic echo /amcl_pose
+#   yaw_deg = degrees(2 * atan2(orientation.z, orientation.w))
+start_yaw_deg: 4.2
+goal_yaw_deg: -176.7
+
+# ── Alternative route classification ──────────────────────────────────────────
+# Keys are route labels used in logs and JSON outputs.
+# Values are representative intermediate node IDs for that route.
+#
+# Rules:
+#   - Do not include the common start or goal node IDs
+#   - If a path passes through at least one listed node, it is classified
+#     with the corresponding label
+#   - If there is a single unique route, use: {}
+route_alternatives:
+  UPPER: [3, 2, 5]
+  LOWER: [4, 2, 6]
+
+# ── Repository paths ──────────────────────────────────────────────────────────
+semantic_objects_path: "maps/semantic_objects.geojson"
+nav2_graph_path: "maps/route_graph_fiir_nav2.geojson"
+semantic_graph_path: "maps/route_graph_fiir_semantic.geojson"
+experiments_dir: "experiments"
+
+# ── ROS topics ────────────────────────────────────────────────────────────────
+odom_topic: "/platform/odom/filtered"
+
+# ── Valid semantic classes ────────────────────────────────────────────────────
+# Add or remove classes depending on the relevant objects in the environment.
+valid_classes:
+  - person
+  - chair
+  - bench
+  - bottle
+  - cup
+  - backpack
+  - suitcase
+  - potted plant
+  - tv
+  - laptop
+  - book
+
+# ── Navigation validation parameters ──────────────────────────────────────────
+max_start_offset_m: 2.0
+max_success_error_m: 2.0
+min_success_dist_m: 1.0
+min_success_duration_s: 3.0
+max_consecutive_fails: 2
+
+# ── Adaptive semantic navigation parameters (Test 3) ─────────────────────────
+prescan_wait_secs: 35
+replan_check_interval_s: 2.0
+node_proximity_thresh_m: 0.5
+
+# ── Odometry tracking parameters ──────────────────────────────────────────────
+odom_sample_hz: 2.0

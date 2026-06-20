@@ -1,0 +1,1094 @@
+{
+  "test_type": "adaptive_forward",
+  "run_number": 1,
+  "timestamp": "2026-03-09T09:08:55.033572+00:00",
+  "robot_start_pose": [
+    0.9775,
+    -0.0024,
+    0.012
+  ],
+  "start_offset_m": 0.023,
+  "replanning": {
+    "segments": [
+      {
+        "segment": 1,
+        "timestamp": "2026-03-09T09:08:28.697782+00:00",
+        "plan_ms": 16.68,
+        "route_type": "MIX",
+        "route_nodes": [
+          0,
+          2,
+          7
+        ],
+        "route_edges": [
+          12,
+          24
+        ],
+        "route_cost": 5.7,
+        "penalties": {
+          "12": 0.0,
+          "24": 0.0
+        },
+        "reason": "initial",
+        "outcome": "success"
+      }
+    ],
+    "total_reroutes": 0,
+    "final_route": [
+      0,
+      2,
+      7
+    ],
+    "outcome": "success"
+  },
+  "route_analysis": {
+    "initial_route": [
+      0,
+      2,
+      7
+    ],
+    "final_route": [
+      0,
+      2,
+      7
+    ],
+    "initial_route_type": "MIX",
+    "route_changed": false,
+    "planning_total_ms": 16.68,
+    "n_segments": 1
+  },
+  "timing": {
+    "prescan_duration_s": 10.47,
+    "navigation_duration_s": 26.544,
+    "total_duration_s": 37.012
+  },
+  "execution": {
+    "duration_s": 26.544,
+    "nav2_success": true,
+    "validated_success": true,
+    "distance_traveled_m": 6.034,
+    "avg_velocity_ms": 0.224,
+    "max_velocity_ms": 0.523,
+    "final_pose": [
+      4.8422,
+      3.519,
+      0.8991
+    ],
+    "trajectory_points": 51,
+    "xy_error_m": 0.1223,
+    "yaw_error_rad": 0.0298
+  },
+  "trajectory": [
+    [
+      0.9675,
+      0.0052,
+      1598.063
+    ],
+    [
+      1.0638,
+      0.031,
+      1599.836
+    ],
+    [
+      1.2055,
+      0.0671,
+      1600.575
+    ],
+    [
+      1.3635,
+      0.0787,
+      1601.318
+    ],
+    [
+      1.4938,
+      0.0833,
+      1602.063
+    ],
+    [
+      1.6987,
+      0.0599,
+      1602.956
+    ],
+    [
+      1.8418,
+      0.037,
+      1603.517
+    ],
+    [
+      1.9686,
+      0.0095,
+      1604.141
+    ],
+    [
+      2.0977,
+      -0.0125,
+      1604.737
+    ],
+    [
+      2.2218,
+      -0.0297,
+      1605.35
+    ],
+    [
+      2.435,
+      -0.0388,
+      1606.448
+    ],
+    [
+      2.5631,
+      -0.0432,
+      1607.036
+    ],
+    [
+      2.6706,
+      -0.0417,
+      1607.64
+    ],
+    [
+      2.7821,
+      -0.0398,
+      1608.242
+    ],
+    [
+      2.9022,
+      -0.0363,
+      1608.885
+    ],
+    [
+      3.0029,
+      -0.04,
+      1609.439
+    ],
+    [
+      3.1838,
+      -0.0204,
+      1610.331
+    ],
+    [
+      3.3021,
+      -0.0091,
+      1610.924
+    ],
+    [
+      3.4261,
+      -0.002,
+      1611.55
+    ],
+    [
+      3.5557,
+      0.0132,
+      1612.172
+    ],
+    [
+      3.6709,
+      0.0234,
+      1612.713
+    ],
+    [
+      3.7965,
+      0.036,
+      1613.331
+    ],
+    [
+      3.9252,
+      0.044,
+      1613.933
+    ],
+    [
+      4.0439,
+      0.0502,
+      1614.541
+    ],
+    [
+      4.1853,
+      0.0465,
+      1615.22
+    ],
+    [
+      4.3345,
+      0.0457,
+      1615.932
+    ],
+    [
+      4.4519,
+      0.0387,
+      1616.633
+    ],
+    [
+      4.5867,
+      0.0334,
+      1617.346
+    ],
+    [
+      4.7205,
+      0.0239,
+      1618.089
+    ],
+    [
+      4.8501,
+      0.0139,
+      1618.773
+    ],
+    [
+      4.9765,
+      0.0053,
+      1619.515
+    ],
+    [
+      5.1311,
+      -0.006,
+      1620.191
+    ],
+    [
+      5.2526,
+      -0.0164,
+      1620.846
+    ],
+    [
+      5.3876,
+      -0.0303,
+      1621.348
+    ],
+    [
+      5.6499,
+      -0.0482,
+      1621.917
+    ],
+    [
+      5.9301,
+      -0.0657,
+      1622.581
+    ],
+    [
+      6.2147,
+      -0.0726,
+      1623.252
+    ],
+    [
+      6.4615,
+      -0.0572,
+      1624.178
+    ]
+  ],
+  "trajectory_odom": [
+    [
+      1.4216,
+      -1.3844,
+      1598.061
+    ],
+    [
+      1.4215,
+      -1.3846,
+      1598.587
+    ],
+    [
+      1.422,
+      -1.3814,
+      1599.088
+    ],
+    [
+      1.4355,
+      -1.2953,
+      1599.59
+    ],
+    [
+      1.4571,
+      -1.1943,
+      1600.139
+    ],
+    [
+      1.4879,
+      -1.0895,
+      1600.685
+    ],
+    [
+      1.5251,
+      -0.9935,
+      1601.187
+    ],
+    [
+      1.5777,
+      -0.8868,
+      1601.738
+    ],
+    [
+      1.6413,
+      -0.7801,
+      1602.284
+    ],
+    [
+      1.7086,
+      -0.6817,
+      1602.792
+    ],
+    [
+      1.7826,
+      -0.5833,
+      1603.294
+    ],
+    [
+      1.8613,
+      -0.4828,
+      1603.834
+    ],
+    [
+      1.9292,
+      -0.3956,
+      1604.337
+    ],
+    [
+      2.0015,
+      -0.2969,
+      1604.886
+    ],
+    [
+      2.0662,
+      -0.1987,
+      1605.437
+    ],
+    [
+      2.1286,
+      -0.0915,
+      1605.988
+    ],
+    [
+      2.1796,
+      0.0074,
+      1606.493
+    ],
+    [
+      2.2301,
+      0.1156,
+      1607.035
+    ],
+    [
+      2.2725,
+      0.2098,
+      1607.535
+    ],
+    [
+      2.3149,
+      0.3003,
+      1608.046
+    ],
+    [
+      2.3673,
+      0.409,
+      1608.587
+    ],
+    [
+      2.4165,
+      0.5102,
+      1609.141
+    ],
+    [
+      2.4585,
+      0.5812,
+      1609.691
+    ],
+    [
+      2.5204,
+      0.6825,
+      1610.234
+    ],
+    [
+      2.5811,
+      0.7822,
+      1610.789
+    ],
+    [
+      2.6429,
+      0.8822,
+      1611.335
+    ],
+    [
+      2.6999,
+      0.9728,
+      1611.836
+    ],
+    [
+      2.7563,
+      1.0587,
+      1612.336
+    ],
+    [
+      2.8178,
+      1.1469,
+      1612.839
+    ],
+    [
+      2.888,
+      1.2432,
+      1613.384
+    ],
+    [
+      2.9578,
+      1.335,
+      1613.935
+    ],
+    [
+      3.0244,
+      1.4191,
+      1614.435
+    ],
+    [
+      3.0924,
+      1.5017,
+      1614.94
+    ],
+    [
+      3.1605,
+      1.5821,
+      1615.443
+    ],
+    [
+      3.2352,
+      1.6691,
+      1615.987
+    ],
+    [
+      3.3058,
+      1.7497,
+      1616.488
+    ],
+    [
+      3.3746,
+      1.8281,
+      1616.994
+    ],
+    [
+      3.451,
+      1.9137,
+      1617.535
+    ],
+    [
+      3.5308,
+      2.0025,
+      1618.089
+    ],
+    [
+      3.6085,
+      2.0891,
+      1618.636
+    ],
+    [
+      3.6801,
+      2.1673,
+      1619.141
+    ],
+    [
+      3.7605,
+      2.2546,
+      1619.687
+    ],
+    [
+      3.834,
+      2.3346,
+      1620.191
+    ],
+    [
+      3.9143,
+      2.4219,
+      1620.735
+    ],
+    [
+      4.0117,
+      2.5284,
+      1621.24
+    ],
+    [
+      4.1957,
+      2.7363,
+      1621.786
+    ],
+    [
+      4.3546,
+      2.9172,
+      1622.288
+    ],
+    [
+      4.5019,
+      3.0904,
+      1622.792
+    ],
+    [
+      4.6417,
+      3.2646,
+      1623.333
+    ],
+    [
+      4.741,
+      3.3916,
+      1623.885
+    ],
+    [
+      4.8176,
+      3.4881,
+      1624.39
+    ]
+  ],
+  "min_object_distance": {
+    "min_distance_m": 1.722,
+    "closest_class": "potted plant"
+  },
+  "penalties_before": {},
+  "penalties_after": {},
+  "system_metrics": {
+    "samples": 27,
+    "duration_s": 26.1,
+    "cpu": {
+      "mean": 84.2,
+      "max": 87.5,
+      "min": 80.9,
+      "std": 1.7
+    },
+    "memory": {
+      "mean": 13.3,
+      "max": 13.4,
+      "min": 13.3,
+      "std": 0.0
+    },
+    "swap": {
+      "mean": 0.0,
+      "max": 0.0,
+      "min": 0.0,
+      "std": 0.0
+    },
+    "cpu_temp": {
+      "mean": 64.2,
+      "max": 65.0,
+      "min": 62.8,
+      "std": 0.5
+    },
+    "battery_start": -1.0,
+    "battery_end": -1.0,
+    "time_series": [
+      {
+        "t": 1773047307.847,
+        "cpu_pct": 84.9,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 65.0,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.75,
+        "yolo_inference_ms": 153.1,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          79.9,
+          85.7,
+          86.6,
+          87.2
+        ]
+      },
+      {
+        "t": 1773047308.856,
+        "cpu_pct": 82.7,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.75,
+        "yolo_inference_ms": 153.1,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          81.6,
+          68.0,
+          94.1,
+          87.0
+        ]
+      },
+      {
+        "t": 1773047309.857,
+        "cpu_pct": 86.5,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.75,
+        "yolo_inference_ms": 153.1,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          88.9,
+          82.7,
+          93.0,
+          80.4
+        ]
+      },
+      {
+        "t": 1773047310.862,
+        "cpu_pct": 84.7,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.07,
+        "yolo_inference_ms": 151.31,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          80.4,
+          92.0,
+          96.0,
+          71.4
+        ]
+      },
+      {
+        "t": 1773047311.868,
+        "cpu_pct": 81.7,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 65.0,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.07,
+        "yolo_inference_ms": 151.31,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          80.2,
+          73.2,
+          96.1,
+          75.5
+        ]
+      },
+      {
+        "t": 1773047312.869,
+        "cpu_pct": 85.1,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 63.9,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.07,
+        "yolo_inference_ms": 151.31,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          81.3,
+          88.9,
+          88.8,
+          82.1
+        ]
+      },
+      {
+        "t": 1773047313.871,
+        "cpu_pct": 86.7,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.07,
+        "yolo_inference_ms": 151.31,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          74.2,
+          100.0,
+          79.4,
+          92.0
+        ]
+      },
+      {
+        "t": 1773047314.872,
+        "cpu_pct": 81.7,
+        "mem_pct": 13.4,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 63.9,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.07,
+        "yolo_inference_ms": 151.31,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          80.0,
+          82.8,
+          86.9,
+          75.8
+        ]
+      },
+      {
+        "t": 1773047315.875,
+        "cpu_pct": 80.9,
+        "mem_pct": 13.4,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.59,
+        "yolo_inference_ms": 161.5,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          76.6,
+          76.8,
+          89.0,
+          81.8
+        ]
+      },
+      {
+        "t": 1773047316.88,
+        "cpu_pct": 84.3,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 63.9,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.59,
+        "yolo_inference_ms": 161.5,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          72.0,
+          96.0,
+          91.9,
+          75.3
+        ]
+      },
+      {
+        "t": 1773047317.882,
+        "cpu_pct": 83.8,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 63.9,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.59,
+        "yolo_inference_ms": 161.5,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          76.8,
+          82.7,
+          95.0,
+          81.0
+        ]
+      },
+      {
+        "t": 1773047318.886,
+        "cpu_pct": 87.5,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.59,
+        "yolo_inference_ms": 161.5,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          83.0,
+          78.4,
+          97.0,
+          90.9
+        ]
+      },
+      {
+        "t": 1773047319.888,
+        "cpu_pct": 86.4,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.59,
+        "yolo_inference_ms": 161.5,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          77.4,
+          92.9,
+          94.0,
+          80.2
+        ]
+      },
+      {
+        "t": 1773047320.891,
+        "cpu_pct": 83.5,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 63.9,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.91,
+        "yolo_inference_ms": 154.18,
+        "yolo_detections": 9,
+        "cpu_per_core": [
+          77.4,
+          97.0,
+          91.0,
+          66.7
+        ]
+      },
+      {
+        "t": 1773047321.893,
+        "cpu_pct": 83.8,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 62.8,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.91,
+        "yolo_inference_ms": 154.18,
+        "yolo_detections": 9,
+        "cpu_per_core": [
+          77.2,
+          84.8,
+          95.0,
+          78.4
+        ]
+      },
+      {
+        "t": 1773047322.898,
+        "cpu_pct": 85.9,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.91,
+        "yolo_inference_ms": 154.18,
+        "yolo_detections": 9,
+        "cpu_per_core": [
+          89.7,
+          93.0,
+          85.7,
+          75.0
+        ]
+      },
+      {
+        "t": 1773047323.902,
+        "cpu_pct": 84.4,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.91,
+        "yolo_inference_ms": 154.18,
+        "yolo_detections": 9,
+        "cpu_per_core": [
+          82.1,
+          87.6,
+          83.8,
+          84.8
+        ]
+      },
+      {
+        "t": 1773047324.906,
+        "cpu_pct": 82.8,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 63.9,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.91,
+        "yolo_inference_ms": 154.18,
+        "yolo_detections": 9,
+        "cpu_per_core": [
+          79.6,
+          79.4,
+          79.8,
+          91.1
+        ]
+      },
+      {
+        "t": 1773047325.91,
+        "cpu_pct": 81.7,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.81,
+        "yolo_inference_ms": 155.11,
+        "yolo_detections": 1,
+        "cpu_per_core": [
+          71.6,
+          85.9,
+          86.0,
+          83.8
+        ]
+      },
+      {
+        "t": 1773047326.913,
+        "cpu_pct": 85.8,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 63.4,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.81,
+        "yolo_inference_ms": 155.11,
+        "yolo_detections": 1,
+        "cpu_per_core": [
+          87.5,
+          80.8,
+          95.0,
+          79.6
+        ]
+      },
+      {
+        "t": 1773047327.916,
+        "cpu_pct": 84.2,
+        "mem_pct": 13.4,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.81,
+        "yolo_inference_ms": 155.11,
+        "yolo_detections": 1,
+        "cpu_per_core": [
+          79.6,
+          81.4,
+          92.9,
+          83.7
+        ]
+      },
+      {
+        "t": 1773047328.919,
+        "cpu_pct": 85.0,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 65.0,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.81,
+        "yolo_inference_ms": 155.11,
+        "yolo_detections": 1,
+        "cpu_per_core": [
+          81.3,
+          68.4,
+          94.1,
+          94.9
+        ]
+      },
+      {
+        "t": 1773047329.92,
+        "cpu_pct": 84.6,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 63.9,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.81,
+        "yolo_inference_ms": 155.11,
+        "yolo_detections": 1,
+        "cpu_per_core": [
+          80.0,
+          88.9,
+          94.9,
+          75.0
+        ]
+      },
+      {
+        "t": 1773047330.923,
+        "cpu_pct": 82.2,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 63.4,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.82,
+        "yolo_inference_ms": 157.5,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          73.9,
+          73.2,
+          97.0,
+          82.7
+        ]
+      },
+      {
+        "t": 1773047331.93,
+        "cpu_pct": 84.3,
+        "mem_pct": 13.4,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.82,
+        "yolo_inference_ms": 157.5,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          85.9,
+          85.9,
+          90.0,
+          76.3
+        ]
+      },
+      {
+        "t": 1773047332.937,
+        "cpu_pct": 82.7,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 63.9,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.82,
+        "yolo_inference_ms": 157.5,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          81.3,
+          76.2,
+          88.0,
+          83.8
+        ]
+      },
+      {
+        "t": 1773047333.94,
+        "cpu_pct": 84.4,
+        "mem_pct": 13.3,
+        "swap_pct": 0.0,
+        "disk_pct": 5.8,
+        "cpu_temp_c": 63.9,
+        "battery_pct": -1.0,
+        "yolo_fps": 5.82,
+        "yolo_inference_ms": 157.5,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          92.9,
+          81.8,
+          72.3,
+          90.1
+        ]
+      }
+    ],
+    "yolo": {
+      "fps": {
+        "mean": 5.8,
+        "max": 6.1,
+        "min": 5.6,
+        "std": 0.2
+      },
+      "inference_ms": {
+        "mean": 155.5,
+        "max": 161.5,
+        "min": 151.3,
+        "std": 3.5
+      },
+      "detections": {
+        "mean": 1.9,
+        "max": 9,
+        "min": 0,
+        "std": 3.5
+      }
+    }
+  },
+  "semantic": {
+    "objects_count": 13,
+    "objects_by_class": {
+      "chair": 2,
+      "person": 7,
+      "potted plant": 3,
+      "bench": 1
+    },
+    "valid_count": 13,
+    "timestamp": "2026-03-09T09:08:53.113681+00:00"
+  },
+  "prescan_snapshot": {
+    "objects_count": 9,
+    "objects_by_class": {
+      "chair": 2,
+      "person": 7
+    },
+    "valid_count": 9,
+    "timestamp": "2026-03-09T09:08:23.106507+00:00"
+  }
+}

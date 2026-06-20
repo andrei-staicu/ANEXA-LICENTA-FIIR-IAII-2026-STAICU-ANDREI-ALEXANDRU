@@ -1,0 +1,45 @@
+semantic_localizer:
+  ros__parameters:
+    # ── Processing ────────────────────────────────────────────────────────────
+    min_confidence: 0.45
+    max_process_rate_hz: 3.0       # Keep conservative on edge hardware
+    max_object_distance: 8.0       # meters
+
+    # ── Topics ────────────────────────────────────────────────────────────────
+    lidar_topic: '/scan'
+    detections_topic: '/yolo26/detections'
+    camera_info_topic: '/camera/camera_info'
+
+    # ── Frames ────────────────────────────────────────────────────────────────
+    map_frame: 'map'
+    base_frame: 'base_link'
+    laser_frame: 'base_laser'
+    camera_frame: 'camera_link_optical'
+
+    # ── Camera–LiDAR alignment ───────────────────────────────────────────────
+    camera_lidar_yaw_offset: 0.0
+
+    # ── LiDAR ray selection ──────────────────────────────────────────────────
+    ray_percentile: 25.0           # 25th percentile approximates the closest surface
+    min_valid_rays: 2
+
+    # ── Object tracking (in-memory) ──────────────────────────────────────────
+    tracking_distance_threshold: 0.5   # meters
+    tracking_timeout: 5.0              # seconds before temporary tracking reset
+    min_detections_stable: 3
+    median_filter_window: 5
+
+    # ── Semantic map persistence ──────────────────────────────────────────────
+    # Paths are written relative to the repository root.
+    semantic_objects_filepath: 'maps/semantic_objects.geojson'
+    route_graph_filepath: 'maps/route_graph_fiir.geojson'
+    output_graph_filepath: 'maps/route_graph_fiir_semantic.geojson'
+    save_interval: 30.0
+    cleanup_interval: 10.0
+    edge_proximity: 1.5                # max object-to-edge distance for annotation (m)
+
+    # ── Route Server graph update ─────────────────────────────────────────────
+    nav2_graph_filepath: 'maps/route_graph_fiir_nav2.geojson'
+    # Optional helper script used in older workflows. Leave empty if conversion
+    # is handled internally by the package.
+    convert_script_path: ''

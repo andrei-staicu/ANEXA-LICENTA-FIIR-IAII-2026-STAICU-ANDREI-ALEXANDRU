@@ -1,0 +1,421 @@
+{
+  "test_type": "adaptive_return",
+  "run_number": 1,
+  "timestamp": "2026-03-09T13:26:44.248333+00:00",
+  "robot_start_pose": [
+    2.2836,
+    1.2754,
+    -2.5441
+  ],
+  "start_offset_m": 0.299,
+  "replanning": {
+    "segments": [
+      {
+        "segment": 1,
+        "timestamp": "2026-03-09T13:26:38.055500+00:00",
+        "plan_ms": 12.04,
+        "route_type": "SUS",
+        "route_nodes": [
+          3,
+          0
+        ],
+        "route_edges": [
+          11
+        ],
+        "route_cost": 70.429,
+        "penalties": {
+          "11": 14.08
+        },
+        "reason": "initial",
+        "outcome": "success"
+      }
+    ],
+    "total_reroutes": 0,
+    "final_route": [
+      3,
+      0
+    ],
+    "outcome": "success"
+  },
+  "route_analysis": {
+    "initial_route": [
+      3,
+      0
+    ],
+    "final_route": [
+      3,
+      0
+    ],
+    "initial_route_type": "SUS",
+    "route_changed": false,
+    "planning_total_ms": 12.04,
+    "n_segments": 1
+  },
+  "timing": {
+    "prescan_duration_s": 0.0,
+    "navigation_duration_s": 6.512,
+    "total_duration_s": 6.512
+  },
+  "execution": {
+    "duration_s": 6.512,
+    "nav2_success": true,
+    "validated_success": true,
+    "distance_traveled_m": 1.883,
+    "avg_velocity_ms": 0.293,
+    "max_velocity_ms": 0.54,
+    "final_pose": [
+      2.4041,
+      0.2512,
+      2.3969
+    ],
+    "trajectory_points": 13,
+    "xy_error_m": 0.247,
+    "yaw_error_rad": 2.496
+  },
+  "trajectory": [
+    [
+      2.1791,
+      1.2219,
+      1455.864
+    ],
+    [
+      2.0221,
+      1.13,
+      1456.541
+    ],
+    [
+      1.8458,
+      0.9551,
+      1457.363
+    ],
+    [
+      1.6787,
+      0.7783,
+      1457.966
+    ],
+    [
+      1.5221,
+      0.5917,
+      1458.583
+    ],
+    [
+      1.3697,
+      0.4302,
+      1459.154
+    ],
+    [
+      1.2158,
+      0.2913,
+      1459.847
+    ]
+  ],
+  "trajectory_odom": [
+    [
+      4.0144,
+      -0.7127,
+      1453.999
+    ],
+    [
+      4.0144,
+      -0.7127,
+      1454.544
+    ],
+    [
+      4.0143,
+      -0.7127,
+      1455.052
+    ],
+    [
+      3.9521,
+      -0.6677,
+      1455.595
+    ],
+    [
+      3.836,
+      -0.5959,
+      1456.098
+    ],
+    [
+      3.7038,
+      -0.5255,
+      1456.599
+    ],
+    [
+      3.5402,
+      -0.4452,
+      1457.144
+    ],
+    [
+      3.2924,
+      -0.3233,
+      1457.696
+    ],
+    [
+      3.0698,
+      -0.2079,
+      1458.197
+    ],
+    [
+      2.8627,
+      -0.0899,
+      1458.698
+    ],
+    [
+      2.6764,
+      0.0303,
+      1459.262
+    ],
+    [
+      2.5363,
+      0.1347,
+      1459.795
+    ],
+    [
+      2.4373,
+      0.2209,
+      1460.298
+    ]
+  ],
+  "min_object_distance": {
+    "min_distance_m": 0.933,
+    "closest_class": "potted plant"
+  },
+  "penalties_before": {
+    "10": 14.08,
+    "11": 14.08,
+    "12": 28.82,
+    "13": 28.82,
+    "14": 20.06,
+    "15": 20.06,
+    "16": 17.06,
+    "17": 17.06,
+    "18": 22.0,
+    "19": 22.0,
+    "20": 15.5,
+    "21": 15.5,
+    "22": 28.3,
+    "23": 28.3,
+    "24": 27.85,
+    "25": 27.85,
+    "26": 6.29,
+    "27": 6.29,
+    "28": 19.45,
+    "29": 19.45
+  },
+  "penalties_after": {
+    "10": 14.08,
+    "11": 14.08,
+    "12": 28.82,
+    "13": 28.82,
+    "14": 20.06,
+    "15": 20.06,
+    "16": 17.06,
+    "17": 17.06,
+    "18": 22.0,
+    "19": 22.0,
+    "20": 15.5,
+    "21": 15.5,
+    "22": 28.3,
+    "23": 28.3,
+    "24": 27.85,
+    "25": 27.85,
+    "26": 6.29,
+    "27": 6.29,
+    "28": 19.45,
+    "29": 19.45
+  },
+  "system_metrics": {
+    "samples": 7,
+    "duration_s": 6.0,
+    "cpu": {
+      "mean": 80.9,
+      "max": 83.9,
+      "min": 77.3,
+      "std": 2.5
+    },
+    "memory": {
+      "mean": 12.7,
+      "max": 12.7,
+      "min": 12.7,
+      "std": 0.0
+    },
+    "swap": {
+      "mean": 0.0,
+      "max": 0.0,
+      "min": 0.0,
+      "std": 0.0
+    },
+    "cpu_temp": {
+      "mean": 64.9,
+      "max": 66.1,
+      "min": 64.5,
+      "std": 0.7
+    },
+    "battery_start": -1.0,
+    "battery_end": -1.0,
+    "time_series": [
+      {
+        "t": 1773062797.09,
+        "cpu_pct": 80.2,
+        "mem_pct": 12.7,
+        "swap_pct": 0.0,
+        "disk_pct": 19.3,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.55,
+        "yolo_inference_ms": 136.45,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          82.4,
+          77.8,
+          82.8,
+          77.6
+        ]
+      },
+      {
+        "t": 1773062798.094,
+        "cpu_pct": 78.0,
+        "mem_pct": 12.7,
+        "swap_pct": 0.0,
+        "disk_pct": 19.3,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.55,
+        "yolo_inference_ms": 136.45,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          72.8,
+          75.0,
+          85.9,
+          78.4
+        ]
+      },
+      {
+        "t": 1773062799.096,
+        "cpu_pct": 82.5,
+        "mem_pct": 12.7,
+        "swap_pct": 0.0,
+        "disk_pct": 19.3,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.55,
+        "yolo_inference_ms": 136.45,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          73.9,
+          77.1,
+          87.9,
+          88.9
+        ]
+      },
+      {
+        "t": 1773062800.1,
+        "cpu_pct": 77.3,
+        "mem_pct": 12.7,
+        "swap_pct": 0.0,
+        "disk_pct": 19.3,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.55,
+        "yolo_inference_ms": 136.45,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          83.2,
+          62.8,
+          81.0,
+          82.8
+        ]
+      },
+      {
+        "t": 1773062801.105,
+        "cpu_pct": 82.3,
+        "mem_pct": 12.7,
+        "swap_pct": 0.0,
+        "disk_pct": 19.3,
+        "cpu_temp_c": 64.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.33,
+        "yolo_inference_ms": 141.41,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          90.9,
+          84.7,
+          83.0,
+          69.5
+        ]
+      },
+      {
+        "t": 1773062802.106,
+        "cpu_pct": 83.9,
+        "mem_pct": 12.7,
+        "swap_pct": 0.0,
+        "disk_pct": 19.3,
+        "cpu_temp_c": 66.1,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.33,
+        "yolo_inference_ms": 141.41,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          71.0,
+          83.8,
+          90.8,
+          88.8
+        ]
+      },
+      {
+        "t": 1773062803.108,
+        "cpu_pct": 82.2,
+        "mem_pct": 12.7,
+        "swap_pct": 0.0,
+        "disk_pct": 19.3,
+        "cpu_temp_c": 65.5,
+        "battery_pct": -1.0,
+        "yolo_fps": 6.33,
+        "yolo_inference_ms": 141.41,
+        "yolo_detections": 0,
+        "cpu_per_core": [
+          88.5,
+          72.9,
+          78.8,
+          88.9
+        ]
+      }
+    ],
+    "yolo": {
+      "fps": {
+        "mean": 6.5,
+        "max": 6.5,
+        "min": 6.3,
+        "std": 0.1
+      },
+      "inference_ms": {
+        "mean": 138.6,
+        "max": 141.4,
+        "min": 136.4,
+        "std": 2.7
+      },
+      "detections": {
+        "mean": 0,
+        "max": 0,
+        "min": 0,
+        "std": 0.0
+      }
+    }
+  },
+  "semantic": {
+    "objects_count": 13,
+    "objects_by_class": {
+      "potted plant": 7,
+      "bench": 1,
+      "bottle": 4,
+      "dining table": 1
+    },
+    "valid_count": 12,
+    "timestamp": "2026-03-09T13:25:58.919100+00:00"
+  },
+  "spin_before": {
+    "duration_s": 1.77,
+    "success": true,
+    "delta_deg": 85.6
+  }
+}

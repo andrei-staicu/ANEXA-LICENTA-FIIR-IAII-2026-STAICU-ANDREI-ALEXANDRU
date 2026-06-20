@@ -1,0 +1,43 @@
+semantic_localizer:
+  ros__parameters:
+    # ── Processing ────────────────────────────────────────────────────────────
+    min_confidence: 0.45
+    max_process_rate_hz: 3.0       # Keep conservative on edge hardware
+    max_object_distance: 8.0       # meters
+
+    # ── Topics ────────────────────────────────────────────────────────────────
+    lidar_topic: '/scan'
+    detections_topic: '/yolo26/detections'
+    camera_info_topic: '/camera/camera_info'
+
+    # ── Frames ────────────────────────────────────────────────────────────────
+    map_frame: 'map'
+    base_frame: 'base_link'
+    laser_frame: 'base_laser'
+    camera_frame: 'camera_link_optical'
+
+    # ── Camera–LiDAR alignment ───────────────────────────────────────────────
+    camera_lidar_yaw_offset: 0.0
+
+    # ── LiDAR ray selection ──────────────────────────────────────────────────
+    ray_percentile: 25.0
+    min_valid_rays: 2
+
+    # ── Object tracking (in-memory) ──────────────────────────────────────────
+    tracking_distance_threshold: 0.5
+    tracking_timeout: 5.0
+    min_detections_stable: 3
+    median_filter_window: 5
+
+    # ── Semantic map persistence ──────────────────────────────────────────────
+    # This configuration is intended for route-aware semantic navigation runs.
+    semantic_objects_filepath: 'maps/semantic_objects.geojson'
+    route_graph_filepath: 'maps/route_graph_fiir.geojson'
+    output_graph_filepath: 'maps/route_graph_fiir_semantic.geojson'
+    save_interval: 30.0
+    cleanup_interval: 10.0
+    edge_proximity: 1.5
+
+    # ── Route Server graph update ─────────────────────────────────────────────
+    nav2_graph_filepath: 'maps/route_graph_fiir_nav2.geojson'
+    convert_script_path: ''
